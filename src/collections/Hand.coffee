@@ -5,6 +5,7 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop())
+    if @scores()[0] > 21 then @trigger 'bust', @
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -20,4 +21,18 @@ class window.Hand extends Backbone.Collection
     # when there is an ace, it offers you two scores - the original score, and score + 10.
     [@minScore(), @minScore() + 10 * @hasAce()]
 
+  stand: ->
+    @trigger 'stand', @
 
+  playDealer: ->
+    @forEach (card) -> if not card.get('revealed') then card.flip()
+    score = @bestScore()
+    while score < 17 
+      @hit()
+      score = @bestScore()
+    if score < 22 then @stand()
+
+
+  bestScore: ->
+    scores = @scores()
+    if scores[1] < 22 then scores[1] else scores[0]
