@@ -24,3 +24,11 @@ class window.App extends Backbone.Model
         @trigger 'dealerWin', @
       else
         @trigger 'push', @
+
+  newHand: ->
+    console.log 'newHand'
+    deck = @get 'deck'
+    @set 'playerHand', deck.dealPlayer()
+    @set 'dealerHand', deck.dealDealer()
+    @get('playerHand').on 'all', @onPlayerEvent, @
+    @get('dealerHand').on 'all', @onDealerEvent, @
