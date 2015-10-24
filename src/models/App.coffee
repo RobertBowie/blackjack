@@ -6,6 +6,7 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     @set 'chips', 100
+    @set 'bet', 5
 
     @get('playerHand').on 'all', @onPlayerEvent, @
     @get('dealerHand').on 'all', @onDealerEvent, @
@@ -14,11 +15,11 @@ class window.App extends Backbone.Model
 
 
     @on 'playerWin', ->
-      @set 'chips', @get('chips') + 5
+      @set 'chips', @get('chips') + @get('bet')
     , @
 
     @on 'dealerWin', ->
-      @set 'chips', @get('chips') - 5
+      @set 'chips', @get('chips') - @get('bet')
     , @
 
 
@@ -50,9 +51,3 @@ class window.App extends Backbone.Model
     if deck.length < 13
       @set 'deck', deck = new Deck()
       deck.on 'all', @onDeckChange, @
-
-  onHandEnd: (event) ->
-    chips = @get 'chips'
-    console.log event
-    if event is 'playerWin' then @set 'chips', chips + 5
-    if event is 'dealerWin' then @set 'chips', chips - 5

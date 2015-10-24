@@ -1,7 +1,10 @@
 class window.AppView extends Backbone.View
   template: _.template '
+    <div class="chips">Chips: <%= chips %></div>
+    <span class="bet">Bet: <%= bet %></span>
+    <button class="increase-bet">+</button>
+    <button class="decrease-bet">-</button><br>
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
-    <span class="chips">Chips: <%= chips %></span>
     <button class="new-hand">Next Hand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
@@ -11,6 +14,12 @@ class window.AppView extends Backbone.View
     'click .hit-button': -> @model.get('playerHand').hit()
     'click .stand-button': -> @model.get('playerHand').stand()
     'click .new-hand': -> @model.newHand()
+    'click .increase-bet': -> 
+      bet = @model.get 'bet'
+      @model.set 'bet', bet + 5 
+    'click .decrease-bet': -> 
+      bet = @model.get 'bet'
+      if bet > 5 then @model.set 'bet', bet - 5 
 
   initialize: ->
     @render()
