@@ -7,7 +7,7 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on 'all', @onPlayerEvent, @
     @get('dealerHand').on 'all', @onDealerEvent, @
-
+    deck.on 'all', @onDeckChange, @
 
   onPlayerEvent: (event) ->
     if event is 'bust' then @trigger 'dealerWin', @
@@ -26,9 +26,14 @@ class window.App extends Backbone.Model
         @trigger 'push', @
 
   newHand: ->
-    console.log 'newHand'
     deck = @get 'deck'
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on 'all', @onPlayerEvent, @
     @get('dealerHand').on 'all', @onDealerEvent, @
+
+  onDeckChange: ->
+    deck = @get 'deck' 
+    if deck.length < 13
+      @set 'deck', deck = new Deck()
+      deck.on 'all', @onDeckChange, @
