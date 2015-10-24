@@ -1,6 +1,7 @@
 class window.AppView extends Backbone.View
   template: _.template '
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
+    <span class="chips">Chips: <%= chips %></span>
     <button class="new-hand">Next Hand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
@@ -20,7 +21,7 @@ class window.AppView extends Backbone.View
 
   render: ->
     @$el.children().detach()
-    @$el.html @template()
+    @$el.html @template(@model.attributes)
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
